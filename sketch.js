@@ -22,21 +22,35 @@ function preload() {
 function setup() {
 	let canvas = createCanvas(bg.width, bg.height);
 	canvas.parent("sketch");
-	// image(groundImg, 0, height - groundImg.height);
-	// for (let i = 0; i < totalPopulation; i++) {
-	// 	let bird = new Bird();
-	// 	aliveBirds[i] = bird;
-	// 	allBirds[i] = bird;
-	// }
+	for (let i = 0; i < totalPopulation; i++) {
+		let bird = new Bird();
+		aliveBirds[i] = bird;
+		allBirds[i] = bird;
+	}
 }
 
 function draw() {
-	console.log(pipes);
 	image(bg, 0, 0);
 	for (let i = pipes.length - 1; i >= 0; i--) {
 		pipes[i].update();
 		if (pipes[i].checkOffScreen()) {
 			pipes.splice(i, 1);
+		}
+	}
+
+	for (let i = aliveBirds.length - 1; i >= 0; i--) {
+		let bird = aliveBirds[i];
+		bird.chooseAction(pipes);
+		bird.update();
+		for (let j = 0; j < pipes.length; j++) {
+			if (pipes[j].checkCollision(bird)) {
+				aliveBirds.splice(i, 1);
+				break;
+			}
+		}
+		if (bird.bottomTopCollision()) {
+			console.log("dead");
+			aliveBirds.splice(i, 1);
 		}
 	}
 
@@ -48,6 +62,9 @@ function draw() {
 
 	for (let i = 0; i < pipes.length; i++) {
 		pipes[i].show();
+	}
+	for (let i = 0; i < aliveBirds.length; i++) {
+		aliveBirds[i].show();
 	}
 	image(groundImg, 0, height - groundImg.height);
 }
