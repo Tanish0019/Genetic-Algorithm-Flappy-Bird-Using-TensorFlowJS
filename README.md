@@ -1,2 +1,1 @@
-# Flappy-Bird-Neuroevolution-TensorflowJS
-Flappy Bird genetic algorithm made using TensorflowJS
+# Genetic Algorithm Flappy Bird Using TensorFlowJS
