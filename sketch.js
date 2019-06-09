@@ -1,15 +1,23 @@
+tf.setBackend("cpu");
+
 // The number of birds in each population
 const totalPopulation = 300;
-let generation = 0;
+
 // Birds currently alived
 let aliveBirds = [];
 
 // all the birds of the current generation
 let allBirds = [];
 
+// Array which holds all the pipes on the screen
 let pipes = [];
 
 let frameCounter = 0;
+
+// Current generation number
+let generation = 1;
+
+let generationSpan;
 
 function preload() {
 	birdImg = loadImage("assets/bird.png");
@@ -20,8 +28,9 @@ function preload() {
 }
 
 function setup() {
-	tf.setBackend("cpu");
 	let canvas = createCanvas(bg.width, bg.height);
+	generationSpan = select("#generation");
+	generationSpan.html(generation);
 	canvas.parent("sketch");
 	for (let i = 0; i < totalPopulation; i++) {
 		let bird = new Bird();
@@ -68,7 +77,7 @@ function draw() {
 	}
 	if (aliveBirds.length == 0) {
 		generation++;
-		console.log("generation ", generation);
+		generationSpan.html(generation);
 		createNextGeneration();
 	}
 
