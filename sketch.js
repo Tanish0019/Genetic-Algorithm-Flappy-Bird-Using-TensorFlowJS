@@ -1,6 +1,6 @@
 // The number of birds in each population
 const totalPopulation = 300;
-
+let generation = 0;
 // Birds currently alived
 let aliveBirds = [];
 
@@ -20,6 +20,7 @@ function preload() {
 }
 
 function setup() {
+	tf.setBackend("cpu");
 	let canvas = createCanvas(bg.width, bg.height);
 	canvas.parent("sketch");
 	for (let i = 0; i < totalPopulation; i++) {
@@ -49,12 +50,11 @@ function draw() {
 			}
 		}
 		if (bird.bottomTopCollision()) {
-			console.log("dead");
 			aliveBirds.splice(i, 1);
 		}
 	}
 
-	if (frameCounter % 75 === 0) {
+	if (frameCounter % 50 === 0) {
 		pipes.push(new Pipe());
 	}
 
@@ -66,5 +66,11 @@ function draw() {
 	for (let i = 0; i < aliveBirds.length; i++) {
 		aliveBirds[i].show();
 	}
+	if (aliveBirds.length == 0) {
+		generation++;
+		console.log("generation ", generation);
+		createNextGeneration();
+	}
+
 	image(groundImg, 0, height - groundImg.height);
 }

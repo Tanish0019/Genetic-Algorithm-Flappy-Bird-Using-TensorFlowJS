@@ -3,7 +3,8 @@ class Bird {
 		this.actualHeight = height - groundImg.height;
 		this.x = 50;
 		this.y = this.actualHeight / 2;
-		this.radius = birdImg.width / 2;
+		this.width = birdImg.width;
+		this.height = birdImg.height;
 		this.gravity = 0.8;
 		this.upLift = -12;
 		this.velocity = 0;
@@ -16,7 +17,7 @@ class Bird {
 
 		if (brain instanceof NeuralNetwork) {
 			this.brain = brain.copy();
-			this.brain.mutate(mutate);
+			this.brain.mutate(0.1);
 		} else {
 			// Parameters are number of inputs, number of units in hidden Layer, number of outputs
 			this.brain = new NeuralNetwork(5, 8, 1);
@@ -26,6 +27,10 @@ class Bird {
 	copy() {
 		return new Bird(this.brain);
 	}
+
+	// mutate(rate) {
+	// 	this.brain.mutate(rate);
+	// }
 
 	show() {
 		image(birdImg, this.x, this.y);
@@ -61,8 +66,7 @@ class Bird {
 			// 5. bird's velocity
 			inputs[4] = map(this.velocity, -12, 12, 0, 1);
 
-			// const action = this.brain.predict(inputs);
-			const action = [0.3];
+			const action = this.brain.predict(inputs);
 			if (action[0] > 0.5) {
 				this.jump();
 			}
@@ -75,7 +79,7 @@ class Bird {
 	}
 
 	bottomTopCollision() {
-		return this.y + this.radius > this.actualHeight || this.y - this.radius < 0;
+		return this.y + this.height / 2 > this.actualHeight || this.y - this.hieght / 2 < 0;
 	}
 
 	update() {

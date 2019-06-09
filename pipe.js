@@ -23,8 +23,8 @@ class Pipe {
 	}
 
 	checkCollision(bird) {
-		if (bird.x + bird.radius >= this.x && bird.x - bird.radius <= this.x + this.width) {
-			if (bird.y - bird.radius <= this.top || bird.y + bird.radius >= this.bottom) {
+		if (bird.x + bird.width / 2 >= this.x && bird.x - bird.width / 2 <= this.x + this.width) {
+			if (bird.y - bird.height / 2 <= this.top || bird.y + bird.height / 2 >= this.bottom) {
 				return true;
 			}
 		}
